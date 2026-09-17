@@ -392,8 +392,18 @@ Endpoint Matrix:
 | Method | Endpoint                        | Description                       | Status Code |
 +--------+---------------------------------+-----------------------------------+-------------+
 | POST   | /api/v1/orders                  | Create a new order with line items| 201 Created |
+| GET    | /api/v1/orders                  | Fetch all orders as a List        | 200 OK      |
 | GET    | /api/v1/orders/{orderNumber}    | Fetch order details by number     | 200 OK      |
+| POST   | /api/v1/inventory               | Add a new inventory item          | 201 Created |
+| GET    | /api/v1/inventory               | Fetch all inventory items as List | 200 OK      |
+| GET    | /api/v1/inventory?skuCode=...   | Check stock for specific SKU codes| 200 OK      |
+| GET    | /api/v1/inventory/{skuCode}     | Fetch single inventory item by SKU| 200 OK      |
+| PUT    | /api/v1/inventory/{skuCode}     | Update total stock quantity       | 200 OK      |
+| POST   | /api/v1/inventory/reserve       | Reserve stock quantity for order  | 200 OK      |
+| DELETE | /api/v1/inventory/{skuCode}     | Delete inventory item by SKU      | 204 No Content
 +--------+---------------------------------+-----------------------------------+-------------+
+
+--- Order Service Examples ---
 
 1. Create Order Request (POST):
 curl -X POST http://localhost:8081/api/v1/orders \
@@ -409,6 +419,39 @@ curl -X POST http://localhost:8081/api/v1/orders \
     ]
   }'
 
-2. Fetch Order Details (GET):
+2. Fetch All Orders (GET):
+curl -X GET http://localhost:8081/api/v1/orders
+
+3. Fetch Single Order Details (GET):
 curl -X GET http://localhost:8081/api/v1/orders/ORD-XXXXXXXX
+
+--- Inventory Service Examples ---
+
+4. Create Inventory Item (POST):
+curl -X POST http://localhost:8082/api/v1/inventory \
+  -H "Content-Type: application/json" \
+  -d '{
+    "skuCode": "IPHONE-15-128GB",
+    "quantity": 100
+  }'
+
+5. Fetch All Inventory Items (GET):
+curl -X GET http://localhost:8082/api/v1/inventory
+
+6. Fetch Single Inventory Item (GET):
+curl -X GET http://localhost:8082/api/v1/inventory/IPHONE-15-128GB
+
+7. Update Stock Quantity (PUT):
+curl -X PUT "http://localhost:8082/api/v1/inventory/IPHONE-15-128GB?quantity=150"
+
+8. Reserve Stock for Order (POST):
+curl -X POST http://localhost:8082/api/v1/inventory/reserve \
+  -H "Content-Type: application/json" \
+  -d '{
+    "skuCode": "IPHONE-15-128GB",
+    "quantity": 2
+  }'
+
+9. Delete Inventory Item (DELETE):
+curl -X DELETE http://localhost:8082/api/v1/inventory/IPHONE-15-128GB
 ================================================================================
