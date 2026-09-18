@@ -1,6 +1,7 @@
 package com.ecommerce.order_service.service;
 
 import com.ecommerce.order_service.dto.*;
+import com.ecommerce.order_service.exception.InventoryServiceUnavailableException;
 import com.ecommerce.order_service.exception.OutOfStockException;
 import com.ecommerce.order_service.model.Order;
 import com.ecommerce.order_service.model.OrderItem;
@@ -104,8 +105,8 @@ public class OrderService {
 
     // Fallback method executed when Inventory Service is down, times out, or circuit opens
     public boolean fallbackCheckStockAvailability(List<OrderItemRequest> items, Throwable throwable) {
-        log.error("Inventory Service is unavailable! Cause: {}", throwable.getMessage());
-        return false;
+        log.error("Inventory Service is unavailable or unreachable! Cause: {}", throwable.getMessage());
+        throw new InventoryServiceUnavailableException("Sorry, a technical error occurred at our end. Please try again later.");
     }
 
     @Transactional(readOnly = true)
