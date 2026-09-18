@@ -4,6 +4,7 @@ import com.ecommerce.inventoryservice.dto.InventoryRequest;
 import com.ecommerce.inventoryservice.dto.InventoryResponse;
 import com.ecommerce.inventoryservice.dto.StockReserveRequest;
 import com.ecommerce.inventoryservice.service.InventoryService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ public class InventoryController {
     // Create a new inventory item
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "createInventory")
     public InventoryResponse createInventory(@RequestBody InventoryRequest inventoryRequest) {
         return inventoryService.createInventory(inventoryRequest);
     }
@@ -27,6 +29,7 @@ public class InventoryController {
     // Fetch all inventory items or check stock status for specific SKU codes
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "getInventory")
     public List<InventoryResponse> getInventory(@RequestParam(required = false) List<String> skuCode) {
         if (skuCode != null && !skuCode.isEmpty()) {
             return inventoryService.isInStock(skuCode);
@@ -37,6 +40,7 @@ public class InventoryController {
     // Fetch single inventory item details by SKU code
     @GetMapping("/{skuCode}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "getInventoryBySkuCode")
     public InventoryResponse getInventoryBySkuCode(@PathVariable String skuCode) {
         return inventoryService.getInventoryBySkuCode(skuCode);
     }
@@ -44,6 +48,7 @@ public class InventoryController {
     // Update stock quantity for a SKU code
     @PutMapping("/{skuCode}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "updateStock")
     public InventoryResponse updateStock(@PathVariable String skuCode, @RequestParam Integer quantity) {
         return inventoryService.updateStock(skuCode, quantity);
     }
@@ -51,6 +56,7 @@ public class InventoryController {
     // Reserve stock for an order
     @PostMapping("/reserve")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "reserveStock")
     public InventoryResponse reserveStock(@RequestBody StockReserveRequest reserveRequest) {
         return inventoryService.reserveStock(reserveRequest);
     }
@@ -58,6 +64,7 @@ public class InventoryController {
     // Delete inventory item by SKU code
     @DeleteMapping("/{skuCode}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "deleteInventory")
     public void deleteInventory(@PathVariable String skuCode) {
         inventoryService.deleteInventory(skuCode);
     }
