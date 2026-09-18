@@ -28,6 +28,30 @@ Entity Relationship Diagram (ASCII):
 |     updatedAt      : Instant       |
 +------------------------------------+
 
+Here is the complete breakdown of entity attributes for both services based on your codebase:
+1. Order Service Entities
+   Order (t_orders)
+   id (Long): Primary key, auto-generated.
+   orderNumber (String): Unique business identifier generated for the order (e.g., ORD-XXXXX).
+   customerId (String): ID of the customer placing the order.
+   status (String): Current order state (e.g., PENDING).
+   totalAmount (BigDecimal): Calculated total price for all items in the order.
+   createdAt (Instant): Timestamp indicating when the order was created.
+   updatedAt (Instant): Timestamp indicating when the order was last modified.
+   orderItems (List<OrderItem>): One-to-Many relationship mapping all line items to this order.
+   OrderItem (t_order_items)
+   id (Long): Primary key, auto-generated.
+   skuCode (String): Product code being purchased.
+   price (BigDecimal): Unit price of the product.
+   quantity (Integer): Number of units requested.
+   order (Order): Many-to-One reference linking the line item back to its parent Order.
+2. Inventory Service Entity
+   Inventory (t_inventory)
+   id (Long): Primary key, auto-generated.
+   skuCode (String): Unique product identifier used to correlate with line items in order-service.
+   quantity (Integer): Total physical stock available in the warehouse.
+   reservedQuantity (Integer): Stock temporarily locked/held for orders currently in progress.
+
 Entity Relationship Details:
 - Type: One-To-Many (Order -> OrderItem)
 - Ownership: OrderItem is the child/owning side containing the foreign key order_id
