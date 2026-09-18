@@ -5,7 +5,6 @@ import com.ecommerce.order_service.dto.OrderResponse;
 import com.ecommerce.order_service.model.Order;
 import com.ecommerce.order_service.model.OrderItem;
 import com.ecommerce.order_service.repository.OrderRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +13,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class OrderService {
 
     private final OrderRepository orderRepository;
+
+    public OrderService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
 
     @Transactional
     public OrderResponse createOrder(OrderRequest orderRequest) {
