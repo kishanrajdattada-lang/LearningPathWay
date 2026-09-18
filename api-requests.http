@@ -1,0 +1,67 @@
+### ==============================================================================
+### ORDER SERVICE (Port 8081)
+### ==============================================================================
+
+### 1. Create a new Order
+POST http://localhost:8081/api/v1/orders
+Content-Type: application/json
+
+{
+  "customerId": "CUST-1001",
+  "items": [
+    {
+      "skuCode": "IPHONE-15-128GB",
+      "price": 799.00,
+      "quantity": 1
+    },
+    {
+      "skuCode": "MACBOOK-AIR-M3",
+      "price": 1299.00,
+      "quantity": 1
+    }
+  ]
+}
+
+### 2. Fetch all Orders
+GET http://localhost:8081/api/v1/orders
+
+### 3. Fetch single Order by Order Number
+GET http://localhost:8081/api/v1/orders/ORD-A1B2C3D4
+
+
+### ==============================================================================
+### INVENTORY SERVICE (Port 8082)
+### ==============================================================================
+
+### 4. Create new Inventory item
+POST http://localhost:8082/api/v1/inventory
+Content-Type: application/json
+
+{
+  "skuCode": "IPHONE-15-128GB",
+  "quantity": 100
+}
+
+### 5. Fetch all Inventory items
+GET http://localhost:8082/api/v1/inventory
+
+### 6. Check stock for specific SKU codes
+GET http://localhost:8082/api/v1/inventory?skuCode=IPHONE-15-128GB&skuCode=MACBOOK-AIR-M3
+
+### 7. Fetch single Inventory item by SKU code
+GET http://localhost:8082/api/v1/inventory/IPHONE-15-128GB
+
+### 8. Update stock quantity for SKU code
+PUT http://localhost:8082/api/v1/inventory/IPHONE-15-128GB?quantity=150
+
+### 9. Reserve stock for an Order
+POST http://localhost:8082/api/v1/inventory/reserve
+Content-Type: application/json
+
+{
+  "skuCode": "IPHONE-15-128GB",
+  "quantity": 2
+}
+
+### 10. Delete Inventory item by SKU code
+DELETE http://localhost:8082/api/v1/inventory/IPHONE-15-128GB
